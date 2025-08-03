@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
     private val bookList = mutableListOf<Book>()
     private lateinit var bookAdapter: BookAdapter
+    private var barcodeFound = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +43,11 @@ class MainActivity : AppCompatActivity() {
         setupRecyclerView()
 
         binding.scanButton.setOnClickListener {
+            barcodeFound = false
+
+            binding.booksRecyclerView.visibility = View.GONE
+            binding.cameraPreview.visibility = View.VISIBLE
+
             if (allPermissionsGranted()) {
                 startCamera()
             } else {
@@ -69,12 +76,13 @@ class MainActivity : AppCompatActivity() {
             val preview = Preview.Builder()
                 .build()
                 .also {
+                    it.setSurfaceProvider(binding.cameraPreview.surfaceProvider)
                 }
 
             val imageAnalyzer = ImageAnalysis.Builder()
                 .build()
 
-            var barcodeFound = false
+
 
             imageAnalyzer.setAnalyzer(cameraExecutor, BarcodeAnalyzer { isbn ->
                 if (!barcodeFound) {
@@ -82,6 +90,10 @@ class MainActivity : AppCompatActivity() {
                     runOnUiThread {
                         Toast.makeText(this, "ISBN Encontrado: $isbn", Toast.LENGTH_SHORT).show()
                         cameraProvider.unbindAll()
+
+                        binding.cameraPreview.visibility = View.GONE
+                        binding.booksRecyclerView.visibility = View.VISIBLE
+
                         fetchBookData(isbn)
                     }
                 }
