@@ -4,15 +4,6 @@ Um aplicativo Android simples e funcional, construído com Kotlin, que transform
 
 Este projeto foi desenvolvido como um exercício prático, utilizando as bibliotecas e componentes modernos do ecossistema Android para a disciplina Programação para Dispositivos Móveis do curso de Sistemas e Mídias Digitais (UFC).
 
----
-
-## Screenshots
-
-1. Galeria com livros adicionados:
-   <img width="400" height="897" alt="image" src="https://github.com/user-attachments/assets/d63030e4-63cf-46cc-a766-cc71e48a0986" />
-
----
-
 ## ✨ Funcionalidades Principais
 
 * **Leitura de ISBN em Tempo Real:** Utiliza a câmera do dispositivo e o ML Kit do Google para uma detecção rápida e precisa de códigos de barras.
