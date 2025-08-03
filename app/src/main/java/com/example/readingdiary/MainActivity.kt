@@ -73,11 +73,19 @@ class MainActivity : AppCompatActivity() {
 
             val imageAnalyzer = ImageAnalysis.Builder()
                 .build()
-                .also {
-                    it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { isbn ->
+
+            var barcodeFound = false
+
+            imageAnalyzer.setAnalyzer(cameraExecutor, BarcodeAnalyzer { isbn ->
+                if (!barcodeFound) {
+                    barcodeFound = true
+                    runOnUiThread {
+                        Toast.makeText(this, "ISBN Encontrado: $isbn", Toast.LENGTH_SHORT).show()
+                        cameraProvider.unbindAll()
                         fetchBookData(isbn)
-                    })
+                    }
                 }
+            })
 
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
