@@ -64,5 +64,3 @@ Para rodar este projeto localmente, você só precisa seguir estes passos:
 ## 💬 Contato
 
 Maria Clara Freire Teles - [LinkedIn](https://www.linkedin.com/in/maria-clara-freire-teles-759381276/) - mariaclarafreireteles@gmail.com
-
-Sinta-se à vontade para entrar em contato!
