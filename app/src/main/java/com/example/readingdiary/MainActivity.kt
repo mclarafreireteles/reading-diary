@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                 if (!barcodeFound) {
                     barcodeFound = true
                     runOnUiThread {
-                        Toast.makeText(this, "ISBN Encontrado: $isbn", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "ISBN Encontrado: $isbn", Toast.LENGTH_SHORT).show()
                         cameraProvider.unbindAll()
 
                         binding.cameraPreview.visibility = View.GONE
@@ -126,16 +126,28 @@ class MainActivity : AppCompatActivity() {
 
                 if (response.isSuccessful) {
                     val bookItem = response.body()?.items?.firstOrNull()
-                    bookItem?.let {
+
+                    if (bookItem != null) {
                         runOnUiThread {
-                            bookList.add(it.volumeInfo)
+                            bookList.add(bookItem.volumeInfo)
                             bookAdapter.notifyItemInserted(bookList.size - 1)
                         }
+                    } else {
+                        runOnUiThread {
+                            Toast.makeText(this@MainActivity, "Livro não encontrado com este ISBN.", Toast.LENGTH_LONG).show()
+                        }
                     }
+
                 } else {
+                    runOnUiThread {
+                        Toast.makeText(this@MainActivity, "Erro ao buscar dados. Verifique sua conexão.", Toast.LENGTH_LONG).show()
+                    }
                     Log.e(TAG, "Error fetching book data: ${response.code()}")
                 }
             } catch (e: Exception) {
+                runOnUiThread {
+                    Toast.makeText(this@MainActivity, "Erro de conexão. Verifique a internet.", Toast.LENGTH_LONG).show()
+                }
                 Log.e(TAG, "Exception when fetching book data", e)
             }
         }
